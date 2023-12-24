@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Chrome Extension Starter",
-  "description": "Chrome extension starter template with React, TypeScript, Vite and Tailwind",
+  "name": "Chrome AI Remark",
+  "description": "Rename bookmarks via AI",
   "version": "1.0",
   "options_ui": {
     "page": "options.html",
@@ -21,6 +21,6 @@
     "type": "module",
     "service_worker": "service_worker.js"
   },
-  "permissions": ["storage", "tabs", "tabGroups"],
+  "permissions": ["storage", "bookmarks"],
   "host_permissions": ["<all_urls>"]
 }
