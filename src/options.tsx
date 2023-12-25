@@ -1,23 +1,44 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import "./options.css";
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 
 const Options = () => {
-  return (
-    <div className="w-screen h-screen flex justify-center p-12">
-      <div className="w-full max-w-4xl flex flex-col gap-y-8">
-        <h1 className="text-4xl font-semibold border-b border-black pb-2">
-          Options Page
-        </h1>
-      </div>
-    </div>
-  );
+    const [apiModel, setApiModel] = useState<string>('');
+    const [apiKey, setApiKey] = useState<string>('');
+
+    useEffect(() => {
+        (async () => {
+            setApiModel((await chrome.storage.local.get('apiModel'))['apiModel'] || 'gpt-3.5-turbo');
+            setApiKey((await chrome.storage.local.get('apiKey'))['apiKey'] || '');
+        })();
+    }, []);
+
+    const saveConfig = async () => {
+        await chrome.storage.local.set({apiModel});
+        await chrome.storage.local.set({apiKey});
+    };
+
+    return (
+            <div>
+                <input
+                        type={'password'}
+                        value={apiKey}
+                        placeholder={'OpenAI Key'}
+                        onChange={(e) => setApiKey(e.target.value)}
+                />
+                <input
+                        value={apiModel}
+                        placeholder={'OpenAI Model'}
+                        onChange={(e) => setApiModel(e.target.value)}
+                />
+                <button onClick={saveConfig}>Save</button>
+            </div>
+    );
 };
 
-const root = createRoot(document.getElementById("root")!);
+const root = createRoot(document.getElementById('root')!);
 
 root.render(
-  <React.StrictMode>
-    <Options />
-  </React.StrictMode>
+        <React.StrictMode>
+            <Options />
+        </React.StrictMode>
 );
